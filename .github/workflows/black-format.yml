@@ -1,0 +1,39 @@
+# .github/workflows/black-format.yml
+name: Black Auto Format
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  black-format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}  # 检出PR的分支，而非主分支
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install black
+        run: pip install black
+
+      - name: Run black format
+        run: black .
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto format code with black"  # 提交信息
+          branch: ${{ github.head_ref }}  # 提交到PR分支
+          file_pattern: "*.py"  # 仅提交Python文件
