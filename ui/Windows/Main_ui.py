@@ -20,14 +20,14 @@ from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QGroupBox
     QHBoxLayout, QHeaderView, QLabel, QLineEdit,
     QListWidget, QListWidgetItem, QMainWindow, QMenu,
     QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QTabWidget, QTextEdit, QTreeWidget, QTreeWidgetItem,
-    QVBoxLayout, QWidget)
+    QTabWidget, QTextBrowser, QTextEdit, QTreeWidget,
+    QTreeWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1050, 670)
+        MainWindow.resize(1050, 720)
         self.showOrHideLog = QAction(MainWindow)
         self.showOrHideLog.setObjectName(u"showOrHideLog")
         self.centralwidget = QWidget(MainWindow)
@@ -147,7 +147,7 @@ class Ui_MainWindow(object):
         self.groupBox_8.setObjectName(u"groupBox_8")
         self.gridLayout_6 = QGridLayout(self.groupBox_8)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.showPaper = QLabel(self.groupBox_8)
+        self.showPaper = QTextBrowser(self.groupBox_8)
         self.showPaper.setObjectName(u"showPaper")
 
         self.gridLayout_6.addWidget(self.showPaper, 0, 0, 1, 1)
@@ -279,7 +279,6 @@ class Ui_MainWindow(object):
         ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"\u9879\u76ee", None));
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"\u7f16\u53f7", None));
         self.groupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"\u8bd5\u5377\u9884\u89c8", None))
-        self.showPaper.setText(QCoreApplication.translate("MainWindow", u"\u8bd5\u5377\u9884\u89c8", None))
         self.groupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"\u64cd\u4f5c", None))
         self.groupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"\u8bd5\u5377\u64cd\u4f5c", None))
         self.importPapers.setText(QCoreApplication.translate("MainWindow", u"\u5bfc\u5165\u8bd5\u5377", None))

@@ -127,6 +127,15 @@ class Papers(_Model, table=True):
                 ownSession.close()
 
     @staticmethod
+    def get(id: int, session: Optional[Session] = None) -> Optional["Papers"]:
+        ownSession = session or getSession()
+        try:
+            return ownSession.get(Papers, id)
+        finally:
+            if not session:
+                ownSession.close()
+
+    @staticmethod
     def mark(
         papersId: int,
         comment: Optional[DataTypes.ApiReply] = None,
