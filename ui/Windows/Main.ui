@@ -195,16 +195,9 @@
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_4">
                 <item>
-                 <widget class="QPushButton" name="checkExam">
+                 <widget class="QPushButton" name="checkChosed">
                   <property name="text">
-                   <string>批改考试</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="recheckChoosed">
-                  <property name="text">
-                   <string>重阅选中</string>
+                   <string>批改选中</string>
                   </property>
                  </widget>
                 </item>

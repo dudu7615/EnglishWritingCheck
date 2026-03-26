@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import QMainWindow, QTreeWidgetItem, QFileDialog, QMessageBox
-from PySide6.QtGui import QPixmap, Qt
 from modules import logger, uiLogger, Sql, Paths
 from pathlib import Path
 from .Windows import Main_ui
@@ -32,25 +31,13 @@ class MainUi(QMainWindow):
         self._initExamList()
         self._initPaperList()
 
-    def onPaperListClicked(self):
-        current = self.ui.paperList.currentItem()
-        if current.parent():
-            paper = Sql.Papers.get(int(current.text(0)))
-            if paper:
-                html = f"""
-                    <html>
-                        <body style="margin:0; padding:0;">
-                            <img src="{Paths.data / paper.img}" 
-                                style="display: block; margin: 0 auto; max-width: 100%; height: auto;" />
-                        </body>
-                    </html>
-                """
-                self.ui.showPaper.setHtml(html)
-
+    # Exam Page
     def createExam(self):
         Sql.Exam.create(
             name=self.ui.examName.text(), remoteId=self.ui.examRemoteId.text()
         )
+
+        logger.info(f"成功创建考试: {self.ui.examName.text()}")
 
         self._initExamList()
         self._initPaperList()
@@ -62,9 +49,12 @@ class MainUi(QMainWindow):
             if exam:
                 exam.delete()
 
+        logger.info(f"成功删除考试: {currentExam.text()}")
+
         self._initExamList()
         self._initPaperList()
 
+    # Paper Page
     def importPapers(self):
         currentExam = self.ui.paperList.currentItem()
         if not currentExam:
@@ -95,6 +85,8 @@ class MainUi(QMainWindow):
                     session=session,
                 )
 
+        logger.info(f"成功导入试卷: {len(files)} 张")
+
         self._initExamList()
         self._initPaperList()
 
@@ -111,8 +103,25 @@ class MainUi(QMainWindow):
                 if paper:
                     paper.delete(session=session)
 
+        logger.info(f"成功删除试卷: {currentPaper.text(1)}")
+
         self._initExamList()
         self._initPaperList()
+
+    def onPaperListClicked(self):
+        current = self.ui.paperList.currentItem()
+        if current.parent():
+            paper = Sql.Papers.get(int(current.text(0)))
+            if paper:
+                html = f"""
+                    <html>
+                        <body style="margin:0; padding:0;">
+                            <img src="{Paths.data / paper.img}" 
+                                style="display: block; margin: 0 auto; max-width: 100%; height: auto;" />
+                        </body>
+                    </html>
+                """
+                self.ui.showPaper.setHtml(html)
 
     def _initExamList(self):
         exams: list[Sql.Exam] = Sql.Exam.getAll()

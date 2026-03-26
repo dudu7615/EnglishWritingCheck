@@ -180,15 +180,10 @@ class Ui_MainWindow(object):
         self.groupBox_7.setObjectName(u"groupBox_7")
         self.verticalLayout_4 = QVBoxLayout(self.groupBox_7)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.checkExam = QPushButton(self.groupBox_7)
-        self.checkExam.setObjectName(u"checkExam")
+        self.checkChosed = QPushButton(self.groupBox_7)
+        self.checkChosed.setObjectName(u"checkChosed")
 
-        self.verticalLayout_4.addWidget(self.checkExam)
-
-        self.recheckChoosed = QPushButton(self.groupBox_7)
-        self.recheckChoosed.setObjectName(u"recheckChoosed")
-
-        self.verticalLayout_4.addWidget(self.recheckChoosed)
+        self.verticalLayout_4.addWidget(self.checkChosed)
 
 
         self.horizontalLayout_3.addWidget(self.groupBox_7)
@@ -284,8 +279,7 @@ class Ui_MainWindow(object):
         self.importPapers.setText(QCoreApplication.translate("MainWindow", u"\u5bfc\u5165\u8bd5\u5377", None))
         self.deleteChoosed.setText(QCoreApplication.translate("MainWindow", u"\u5220\u9664\u9009\u5b9a", None))
         self.groupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"\u6279\u6539\u64cd\u4f5c", None))
-        self.checkExam.setText(QCoreApplication.translate("MainWindow", u"\u6279\u6539\u8003\u8bd5", None))
-        self.recheckChoosed.setText(QCoreApplication.translate("MainWindow", u"\u91cd\u9605\u9009\u4e2d", None))
+        self.checkChosed.setText(QCoreApplication.translate("MainWindow", u"\u6279\u6539\u9009\u4e2d", None))
         self.groupBox_9.setTitle(QCoreApplication.translate("MainWindow", u"\u8bc4\u8bed", None))
         self.showScore.setText(QCoreApplication.translate("MainWindow", u"\u5206\u6570\uff1a", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.checkTab), QCoreApplication.translate("MainWindow", u"\u8bd5\u5377\u6279\u9605", None))
