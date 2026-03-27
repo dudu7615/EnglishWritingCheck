@@ -40,17 +40,22 @@ class Ui_MainWindow(object):
         self.examTab.setObjectName(u"examTab")
         self.gridLayout_4 = QGridLayout(self.examTab)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.groupBox = QGroupBox(self.examTab)
-        self.groupBox.setObjectName(u"groupBox")
-        self.gridLayout_2 = QGridLayout(self.groupBox)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.examList = QListWidget(self.groupBox)
-        self.examList.setObjectName(u"examList")
+        self.groupBox_3 = QGroupBox(self.examTab)
+        self.groupBox_3.setObjectName(u"groupBox_3")
+        self.horizontalLayout_2 = QHBoxLayout(self.groupBox_3)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.creatNewExam = QPushButton(self.groupBox_3)
+        self.creatNewExam.setObjectName(u"creatNewExam")
 
-        self.gridLayout_2.addWidget(self.examList, 0, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.creatNewExam)
+
+        self.deleteExam = QPushButton(self.groupBox_3)
+        self.deleteExam.setObjectName(u"deleteExam")
+
+        self.horizontalLayout_2.addWidget(self.deleteExam)
 
 
-        self.gridLayout_4.addWidget(self.groupBox, 0, 0, 2, 1)
+        self.gridLayout_4.addWidget(self.groupBox_3, 2, 1, 1, 1)
 
         self.groupBox_2 = QGroupBox(self.examTab)
         self.groupBox_2.setObjectName(u"groupBox_2")
@@ -103,24 +108,37 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
 
-        self.gridLayout_4.addWidget(self.groupBox_2, 0, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.groupBox_2, 1, 1, 1, 1)
 
-        self.groupBox_3 = QGroupBox(self.examTab)
-        self.groupBox_3.setObjectName(u"groupBox_3")
-        self.horizontalLayout_2 = QHBoxLayout(self.groupBox_3)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.creatNewExam = QPushButton(self.groupBox_3)
-        self.creatNewExam.setObjectName(u"creatNewExam")
+        self.groupBox_10 = QGroupBox(self.examTab)
+        self.groupBox_10.setObjectName(u"groupBox_10")
+        self.gridLayout_8 = QGridLayout(self.groupBox_10)
+        self.gridLayout_8.setObjectName(u"gridLayout_8")
+        self.label_4 = QLabel(self.groupBox_10)
+        self.label_4.setObjectName(u"label_4")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy)
+        self.label_4.setOpenExternalLinks(True)
 
-        self.horizontalLayout_2.addWidget(self.creatNewExam)
-
-        self.deleteExam = QPushButton(self.groupBox_3)
-        self.deleteExam.setObjectName(u"deleteExam")
-
-        self.horizontalLayout_2.addWidget(self.deleteExam)
+        self.gridLayout_8.addWidget(self.label_4, 0, 0, 1, 1)
 
 
-        self.gridLayout_4.addWidget(self.groupBox_3, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.groupBox_10, 0, 1, 1, 1)
+
+        self.groupBox = QGroupBox(self.examTab)
+        self.groupBox.setObjectName(u"groupBox")
+        self.gridLayout_2 = QGridLayout(self.groupBox)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.examList = QListWidget(self.groupBox)
+        self.examList.setObjectName(u"examList")
+
+        self.gridLayout_2.addWidget(self.examList, 0, 0, 1, 1)
+
+
+        self.gridLayout_4.addWidget(self.groupBox, 0, 0, 3, 1)
 
         self.gridLayout_4.setColumnStretch(0, 1)
         self.gridLayout_4.setColumnStretch(1, 3)
@@ -251,7 +269,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -260,14 +278,16 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.showOrHideLog.setText(QCoreApplication.translate("MainWindow", u"\u663e\u793a/\u9690\u85cf \u65e5\u5fd7", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u8003\u8bd5\u5217\u8868", None))
+        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"\u64cd\u4f5c", None))
+        self.creatNewExam.setText(QCoreApplication.translate("MainWindow", u"\u65b0\u5efa\u8003\u8bd5", None))
+        self.deleteExam.setText(QCoreApplication.translate("MainWindow", u"\u5220\u9664\u8003\u8bd5", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"\u4fe1\u606f\u7f16\u8f91", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u8003\u8bd5\u540d\u79f0(\u9009\u586b)\uff1a", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u4efb\u52a1\u7f16\u53f7\uff1a", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u8bd5\u5377\u6570\u91cf\uff1a", None))
-        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"\u64cd\u4f5c", None))
-        self.creatNewExam.setText(QCoreApplication.translate("MainWindow", u"\u65b0\u5efa\u8003\u8bd5", None))
-        self.deleteExam.setText(QCoreApplication.translate("MainWindow", u"\u5220\u9664\u8003\u8bd5", None))
+        self.groupBox_10.setTitle(QCoreApplication.translate("MainWindow", u"\u521b\u5efa\u4efb\u52a1", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"\u8bf7\u524d\u5f80 <a href=\"https://api.extreme-code.cn/apply/dhxx/index.php\">https://api.extreme-code.cn/apply/dhxx/index.php</a> \u8bbe\u7f6e\u8003\u8bd5\u4fe1\u606f\uff0c\u5e76\u590d\u5236\u8fd4\u56de\u7f16\u53f7", None))
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u8003\u8bd5\u5217\u8868", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.examTab), QCoreApplication.translate("MainWindow", u"\u8003\u8bd5\u7ba1\u7406", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"\u8003\u8bd5\u5217\u8868", None))
         ___qtreewidgetitem = self.paperList.headerItem()
