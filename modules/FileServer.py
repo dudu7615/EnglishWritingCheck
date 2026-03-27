@@ -16,7 +16,6 @@ async def _handle(filePath: str):   # type: ignore
             return FileResponse(path)
         
         if path.is_dir():
-            logger.info(f"访问目录: {path}")
             items = [item.name for item in sorted(path.iterdir())]
             return {"items": items}
         
