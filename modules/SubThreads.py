@@ -1,3 +1,5 @@
+
+import threading
 from PySide6.QtCore import QThread, Signal
 from modules import Cloudflare, FileServer, CallApi, DataTypes
 
@@ -11,9 +13,9 @@ class CloudflareThread(QThread):
         self.timeout = timeout
 
     def run(self):
+        threading.current_thread().name = "CloudflareThread"
         url = Cloudflare.run(self.port, self.timeout)
         self.result.emit(url)
-        self.terminate()
 
 
 class FileServerThread(QThread):
@@ -22,13 +24,17 @@ class FileServerThread(QThread):
         self.port = port
 
     def run(self):
+        threading.current_thread().name = "FileServerThread"
         FileServer.run(self.port)
 
 
 class CallApiThread(QThread):
+    finished = Signal()
     def __init__(self, tasks: list[DataTypes.Task]) -> None:
         super().__init__()
         self.tasks = tasks
 
     def run(self):
+        threading.current_thread().name = "CallApiThread"
         CallApi.run(self.tasks)
+        self.finished.emit()
