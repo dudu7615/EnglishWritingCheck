@@ -1,4 +1,3 @@
-
 import threading
 from PySide6.QtCore import QThread, Signal
 from modules import Cloudflare, FileServer, CallApi, DataTypes
@@ -29,7 +28,7 @@ class FileServerThread(QThread):
 
 
 class CallApiThread(QThread):
-    finished = Signal()
+    finished = Signal(object)  # list[DataTypes.Task]
     def __init__(self, tasks: list[DataTypes.Task]) -> None:
         super().__init__()
         self.tasks = tasks
@@ -37,4 +36,4 @@ class CallApiThread(QThread):
     def run(self):
         threading.current_thread().name = "CallApiThread"
         CallApi.run(self.tasks)
-        self.finished.emit()
+        self.finished.emit(self.tasks)
