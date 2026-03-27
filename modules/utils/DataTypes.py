@@ -97,7 +97,8 @@ class ResultDetale:
 @dataclass
 class Task:
     id: str
+    examRemoteId: str
     imgUrl: str
     imgPath: Path
-    apiReply: ApiReply
+    apiReply: ApiReply | None
 
