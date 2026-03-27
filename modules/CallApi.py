@@ -17,7 +17,7 @@ def _decodeReply(reply: str) -> DataTypes.ApiReply:
 async def _callApi(task: DataTypes.Task, client: httpx.AsyncClient) -> None:
     params: dict[str, str] = {
         "apikey": config["key"],
-        "id": task.id,
+        "id": task.examRemoteId,
         "ocr": task.imgUrl,
     }
 
