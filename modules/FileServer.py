@@ -13,7 +13,6 @@ async def _handle(filePath: str):   # type: ignore
         path = Paths.data / "imgs" / filePath
         
         if path.is_file():
-            logger.info(f"下载文件: {path}")
             return FileResponse(path)
         
         if path.is_dir():
