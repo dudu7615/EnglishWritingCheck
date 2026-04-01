@@ -120,6 +120,19 @@ class MainUi(QMainWindow):
         self._initPaperList()
 
     def checkChosed(self):
+        if self.apiThread and self.apiThread.isRunning():
+            reply = QMessageBox.question(
+                self,
+                "确认",
+                "检查正在进行中，确定要取消当前操作吗？",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No,
+            )
+            if reply == QMessageBox.StandardButton.No:
+                return
+            self.apiThread.terminate()
+            self.apiThread = None
+
         current = self.ui.paperList.currentItem()
 
         if not current:
@@ -164,8 +177,8 @@ class MainUi(QMainWindow):
 
         self.apiThread = SubThreads.CallApiThread(tasks)
         self.apiThread.finished.connect(self._finishCkeck)
+        self.apiThread.progress.connect(self._mamageCheckProgress)
         self.apiThread.start()
-
 
     def onPaperListClicked(self):
         current = self.ui.paperList.currentItem()
@@ -243,11 +256,7 @@ class MainUi(QMainWindow):
         logger.info(f"成功建立文件服务器：{self.cfUrl}")
 
     def _finishCkeck(self, tasks: list[DataTypes.Task]):
-        with Sql.getSession() as session:
-            for task in tasks:
-                paper = Sql.Papers.get(int(task.id))
-                if paper:
-                    paper.comment = dict(task.apiReply) if task.apiReply else None
-            session.commit()
+        QMessageBox.information(self, "提示", f"检查完成，共处理 {len(tasks)} 个任务")
 
-            
+    def _mamageCheckProgress(self, prog: int):
+        self.ui.checkProgress.setValue(int(prog))

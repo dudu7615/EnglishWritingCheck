@@ -19,9 +19,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QGroupBox,
     QHBoxLayout, QHeaderView, QLabel, QLineEdit,
     QListWidget, QListWidgetItem, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QTabWidget, QTextBrowser, QTextEdit, QTreeWidget,
-    QTreeWidgetItem, QVBoxLayout, QWidget)
+    QMenuBar, QProgressBar, QPushButton, QSizePolicy,
+    QStatusBar, QTabWidget, QTextBrowser, QTextEdit,
+    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -203,6 +203,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.checkChosed)
 
+        self.checkProgress = QProgressBar(self.groupBox_7)
+        self.checkProgress.setObjectName(u"checkProgress")
+        self.checkProgress.setValue(0)
+
+        self.verticalLayout_4.addWidget(self.checkProgress)
+
 
         self.horizontalLayout_3.addWidget(self.groupBox_7)
 
@@ -269,7 +275,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
