@@ -3,11 +3,14 @@ import re
 import time
 import threading
 import io
+import os
 from queue import Queue
 from modules import Paths, logger
 
 
 _exitReadOutput = False
+_cloudflareBin = Paths.bin / "cloudflared.exe" if os.name == "nt" else Paths.bin / "cloudflared"
+
 
 def _read_output(stream: io.TextIOWrapper | None, queue: Queue[str]):
     """在独立线程中读取流数据"""
@@ -28,7 +31,7 @@ def run(port: int, timeout: int = 10) -> str | None:
     global _exitReadOutput
     # cloudflared tunnel --url http://127.0.0.1:8000
     process = subprocess.Popen(
-        [str(Paths.bin / "cloudflared.exe"), "tunnel", "--url", f"http://127.0.0.1:{port}"],
+        [str(_cloudflareBin), "tunnel", "--url", f"http://127.0.0.1:{port}"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True
