@@ -31,6 +31,7 @@ def _to_markdown_key(key: str, level: int = 2) -> str:
 
 
 def _dict_to_markdown(data: Mapping[str, _JSONValue], level: int = 2) -> list[str]:
+    # sourcery skip: low-code-quality
     lines: list[str] = []
     for key, value in data.items():
         title = _to_markdown_key(key, level)
@@ -46,18 +47,33 @@ def _dict_to_markdown(data: Mapping[str, _JSONValue], level: int = 2) -> list[st
             # 对纯文本列表做简单 bullet
             if all(isinstance(item, (str, int)) for item in value):
                 lines.append(f"{title}:")
-                for item in value:
-                    lines.append(f"- {item}")
+                lines.extend(f"- {item}" for item in value)
                 continue
 
             # 对 dict 列表，逐条展开为有序子条目（条目数字 + 内部缩进子 bullet）
             if all(isinstance(item, dict) for item in value):
                 lines.append(f"#### {_dataNames.get(key, key)}:")
                 for idx, item in enumerate(value, start=1):
-                    lines.append(f"{idx}. {_dataNames.get(key, key)}")
+                    # 尝试从常见字段中提取更有意义的条目标题
+                    if isinstance(item, dict):
+                        # 优先使用 title，其次 text，找不到就回退到 “Item {idx}”
+                        item_label = (
+                            str(item.get("title"))
+                            if "title" in item and item.get("title")
+                            else str(item.get("text"))
+                            if "text" in item and item.get("text")
+                            else f"Item {idx}"
+                        )
+                    else:
+                        item_label = f"Item {idx}"
+                    lines.append(f"{idx}. {item_label}")
                     if isinstance(item, dict):
                         for sub_key, sub_val in item.items():
-                            if isinstance(sub_val, (str, int)):
+                            if (
+                                isinstance(sub_val, (str, int))
+                                or not isinstance(sub_val, list)
+                                and not isinstance(sub_val, dict)
+                            ):
                                 lines.append(
                                     f"    - {_dataNames.get(sub_key, sub_key)}: {sub_val}"
                                 )
@@ -65,25 +81,18 @@ def _dict_to_markdown(data: Mapping[str, _JSONValue], level: int = 2) -> list[st
                                 lines.append(
                                     f"    - {_dataNames.get(sub_key, sub_key)}:"
                                 )
-                                for sub_item in sub_val:
-                                    lines.append(f"        - {sub_item}")
-                            elif isinstance(sub_val, dict):
+                                lines.extend(f"        - {sub_item}" for sub_item in sub_val)
+                            else:
                                 # 递归一层字典内容，格式化为缩进子 bullet
                                 nested = _dict_to_markdown(sub_val, level + 2)
-                                for nline in nested:
-                                    lines.append(f"    - {nline}")
-                            else:
-                                lines.append(
-                                    f"    - {_dataNames.get(sub_key, sub_key)}: {sub_val}"
-                                )
+                                lines.extend(f"    - {nline}" for nline in nested)
                     else:
                         lines.append(f"    - {result2Markdown(item, level + 1)}")
                 continue
 
             # 回退：混合列表/不规则类型
             lines.append(f"{title}:")
-            for item in value:
-                lines.append(f"- {result2Markdown(item, level + 1)}")
+            lines.extend(f"- {result2Markdown(item, level + 1)}" for item in value)
             continue
 
         if isinstance(value, dict):
@@ -103,8 +112,7 @@ def result2Markdown(data: _JSONValue, level: int = 2) -> str:
         if len(data) == 0:
             return "(空)"
         lines: list[str] = []
-        for item in data:
-            lines.append(result2Markdown(item, level + 1))
+        lines.extend(result2Markdown(item, level + 1) for item in data)
         return "\n".join(lines)
 
     # dict

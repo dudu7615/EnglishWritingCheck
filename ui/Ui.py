@@ -54,8 +54,7 @@ class MainUi(QMainWindow):
     def deleteExam(self):
         currentExam = self.ui.examList.currentItem()
         if currentExam:
-            exam = Sql.Exam.get(currentExam.text())
-            if exam:
+            if exam := Sql.Exam.get(currentExam.text()):
                 exam.delete()
 
         logger.info(f"成功删除考试: {currentExam.text()}")
@@ -107,8 +106,9 @@ class MainUi(QMainWindow):
 
         if currentPaper.parent():
             with Sql.getSession() as session:
-                paper = Sql.Papers.get(int(currentPaper.text(0)), session=session)
-                if paper:
+                if paper := Sql.Papers.get(
+                    int(currentPaper.text(0)), session=session
+                ):
                     paper.delete(session=session)
         else:
             QMessageBox.warning(self, "警告", "请先选择一张试卷")
@@ -141,8 +141,7 @@ class MainUi(QMainWindow):
             return
 
         if current.parent():
-            paper = Sql.Papers.get(int(current.text(0)))
-            if paper:
+            if paper := Sql.Papers.get(int(current.text(0))):
                 papers = [paper]
                 exam = Sql.Exam.get(paper.belong)
                 if not exam:
@@ -162,17 +161,16 @@ class MainUi(QMainWindow):
                 return
 
         tasks: list[DataTypes.Task] = []
-        for paper in papers:
-            tasks.append(
-                DataTypes.Task(
-                    id=str(paper.id),
-                    examRemoteId=exam.remoteId,
-                    imgUrl=f"{self.cfUrl}/{paper.img}",
-                    imgPath=Paths.data / "imgs" / paper.img,
-                    apiReply=None,
-                )
+        tasks.extend(
+            DataTypes.Task(
+                id=str(paper.id),
+                examRemoteId=exam.remoteId,
+                imgUrl=f"{self.cfUrl}/{paper.img}",
+                imgPath=Paths.data / "imgs" / paper.img,
+                apiReply=None,
             )
-
+            for paper in papers
+        )
         logger.info(f"选中的试卷: {len(papers)} 张")
 
         self.apiThread = SubThreads.CallApiThread(tasks)
@@ -183,8 +181,7 @@ class MainUi(QMainWindow):
     def onPaperListClicked(self):
         current = self.ui.paperList.currentItem()
         if current.parent():
-            paper = Sql.Papers.get(int(current.text(0)))
-            if paper:
+            if paper := Sql.Papers.get(int(current.text(0))):
                 html = f"""
                     <html>
                         <body style="margin:0; padding:0;">
@@ -259,4 +256,4 @@ class MainUi(QMainWindow):
         QMessageBox.information(self, "提示", f"检查完成，共处理 {len(tasks)} 个任务")
 
     def _mamageCheckProgress(self, prog: int):
-        self.ui.checkProgress.setValue(int(prog))
+        self.ui.checkProgress.setValue(prog)
