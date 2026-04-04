@@ -1,18 +1,25 @@
 from modules import HandleApiResult
 
-test = {
+test: HandleApiResult._JSONValue = {
     "data": {
         "result": {
             "score": 85,
             "recognized_text": "This is a sample text.",
             "strengths": "strengths",
-            "word_usage_errors": [                {
-                "错误单词": "sample",
-                 "原句引用": "This is a sample text.",
-                 "修正形式": "This is a sample text.",
-                 "错误原因解释": "错误原因解释"
+            "word_usage_errors": [               
+                 {
+                    "错误单词": "sample",
+                    "原句引用": "This is a sample text.",
+                    "修正形式": "This is a sample text.",
+                    "错误原因解释": "错误原因解释"
                  
-                 }
+                 },{
+                    "错误单词": "1sample",
+                    "原句引用": "1This is a sample text.",
+                    "修正形式": "1This is a sample text.",
+                    "错误原因解释": "1错误原因解释"
+                 
+                 },
 
             ]
         }
