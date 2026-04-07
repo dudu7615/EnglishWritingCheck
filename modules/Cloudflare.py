@@ -32,6 +32,7 @@ def run(port: int, timeout: int = 10) -> str | None:
     进程会在后台持续运行
     """
     global _exitReadOutput
+    _exitReadOutput = False
     # cloudflared tunnel --url http://127.0.0.1:8000
     process = subprocess.Popen(
         [str(_cloudflareBin), "tunnel", "--url", f"http://127.0.0.1:{port}"],
