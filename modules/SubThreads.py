@@ -13,8 +13,11 @@ class CloudflareThread(QThread):
 
     def run(self):
         threading.current_thread().name = "CloudflareThread"
-        url = Cloudflare.run(self.port, self.timeout)
-        self.result.emit(url)
+        for _ in range(3):
+            url = Cloudflare.run(self.port, self.timeout)
+            if url:
+                self.result.emit(url)
+                return
 
 
 class FileServerThread(QThread):
