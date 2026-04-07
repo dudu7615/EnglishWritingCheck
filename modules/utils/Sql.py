@@ -20,7 +20,7 @@ class Exam(_Model, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True, max_length=200)
-    remoteId: str = Field(default=None, max_length=200)
+    remoteId: str = Field(max_length=200)
     topic: Optional[str] = Field(default=None)  # 考试题目
     answer: Optional[str] = Field(default=None)  # 标准答案
     answerCount: int = Field(default=0)
