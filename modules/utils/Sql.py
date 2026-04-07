@@ -68,8 +68,7 @@ class Exam(_Model, table=True):
         ownSession = session or getSession()
         try:
             statement = select(Exam).where(Exam.id == chapterId)
-            result = ownSession.exec(statement).first()
-            return result
+            return ownSession.exec(statement).first()
         finally:
             if not session:
                 ownSession.close()
@@ -79,8 +78,7 @@ class Exam(_Model, table=True):
         ownSession = session or getSession()
         try:
             statement = select(Exam).where(Exam.name == title)
-            result = ownSession.exec(statement).first()
-            return result
+            return ownSession.exec(statement).first()
         finally:
             if not session:
                 ownSession.close()
@@ -111,16 +109,12 @@ class Papers(_Model, table=True):
             papers = Papers(belong=belong, img=img)
             ownSession.add(papers)
 
-            ownSession.commit()
-            ownSession.refresh(papers)
-
-            # 更新对应 Exam 的 answerCount
-            exam = ownSession.get(Exam, belong)
-            if exam:
+            if exam := ownSession.get(Exam, belong):
                 exam.answerCount += 1
                 ownSession.add(exam)
-                ownSession.commit()
 
+            ownSession.commit()
+            ownSession.refresh(papers)
             return papers
         finally:
             if not session:
@@ -186,9 +180,7 @@ class Papers(_Model, table=True):
             ownSession.delete(self)
             ownSession.commit()
 
-            # 更新对应 Exam 的 answerCount
-            exam = ownSession.get(Exam, belong)
-            if exam:
+            if exam := ownSession.get(Exam, belong):
                 exam.answerCount = max(0, exam.answerCount - 1)
                 ownSession.add(exam)
                 ownSession.commit()
