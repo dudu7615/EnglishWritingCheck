@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QTreeWidgetItem, QFileDialog, QMessageBox
-from modules import logger, uiLogger, Sql, Paths, DataTypes, SubThreads
+from modules import logger, uiLogger, Sql, Paths, DataTypes, SubThreads, HandleApiResult
 from pathlib import Path
 from .Windows import Main_ui
 import socket
@@ -182,15 +182,20 @@ class MainUi(QMainWindow):
         current = self.ui.paperList.currentItem()
         if current.parent():
             if paper := Sql.Papers.get(int(current.text(0))):
-                html = f"""
+                showPaper = f"""
                     <html>
                         <body style="margin:0; padding:0;">
-                            <img src="{Paths.data / "imgs" / paper.img}" 
+                            <img src="{(Paths.data / "imgs" / paper.img).as_uri()}" 
                                 style="display: block; margin: 0 auto; max-width: 100%; height: auto;" />
                         </body>
                     </html>
                 """
-                self.ui.showPaper.setHtml(html)
+                self.ui.showPaper.setHtml(showPaper)
+
+                if comment := paper.comment:
+                    self.ui.showDetals.setMarkdown(HandleApiResult.result2Markdown(comment))
+                else:
+                    self.ui.showDetals.setMarkdown("# 未批改")
 
     def _initExamList(self):
         exams: list[Sql.Exam] = Sql.Exam.getAll()
