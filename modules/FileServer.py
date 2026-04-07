@@ -13,7 +13,7 @@ async def _handle(filePath: str):  # type: ignore
     try:
         base = Paths.data / "imgs"
         path = (base / filePath).resolve()
-        
+
         # Prevent path traversal attacks
         if not path.is_relative_to(base.resolve()):
             return JSONResponse({"error": "访问被拒绝"}, status_code=403)
