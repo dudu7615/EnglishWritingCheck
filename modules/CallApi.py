@@ -32,12 +32,16 @@ class CallApi(QObject):
                         f"尝试调用 API 失败，任务 {task.id} 状态码: {response.status_code}"
                     )
                     continue
+
+            except Exception as e:
+                logger.warning(f"调用 API 报错，任务 {task.id}: {e}")
+                continue
+            try:
                 task.apiReply = self._decodeReply(response.text)
-                logger.info(f"API 调用成功，任务 {task.id}")
                 self.finish.emit(task)
                 return
             except Exception as e:
-                logger.warning(f"调用 API 报错，任务 {task.id}: {e}")
+                logger.warning(f"解析 API 回复失败，任务 {task.id}: {e}")
                 continue
         logger.error(f"调用 API 失败，任务 {task.id}，经过 3 次尝试")
 
