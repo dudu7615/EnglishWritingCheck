@@ -36,4 +36,4 @@ jobs:
         with:
           commit_message: "style: auto format code with black"  # 提交信息
           branch: ${{ github.head_ref }}  # 提交到PR分支
-          file_pattern: "*.py"  # 仅提交Python文件
+          file_pattern: "**/*.py"  # 仅提交Python文件
