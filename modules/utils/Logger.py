@@ -16,10 +16,11 @@ class _LoggerHandle(QObject):
     def flush(self):
         pass
 
+
 uiLogger = _LoggerHandle()
 logger.add(
     uiLogger.write,
-    colorize=True, 
+    colorize=True,
     level="DEBUG",  # 最低输出级别
     catch=True,  # 捕获sink异常，避免UI崩溃
 )

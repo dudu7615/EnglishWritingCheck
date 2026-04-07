@@ -5,6 +5,7 @@ import anyio
 import json
 from PySide6.QtCore import Signal, QObject
 
+
 class CallApi(QObject):
     finish = Signal(object)  # Task
 
@@ -15,7 +16,6 @@ class CallApi(QObject):
         data: dict[str, Any] = json.loads(reply)
         data["data"]["result"] = json.loads(str(data["data"]["result"]))
         return DataTypes.ApiReply(**data)
-
 
     async def _callApi(self, task: DataTypes.Task, client: httpx.AsyncClient) -> None:
         params: dict[str, str] = {
@@ -41,7 +41,6 @@ class CallApi(QObject):
                 continue
         logger.error(f"调用 API 失败，任务 {task.id}，经过 3 次尝试")
 
-
     async def _main(self, tasks: list[DataTypes.Task]) -> None:
         """批量异步调用 API"""
         semaphore: anyio.Semaphore = anyio.Semaphore(64)
@@ -54,7 +53,6 @@ class CallApi(QObject):
             async with anyio.create_task_group() as tg:
                 for task in tasks:
                     tg.start_soon(wrapper, task, client)
-
 
     def run(self, tasks: list[DataTypes.Task]):
         anyio.run(self._main, tasks)

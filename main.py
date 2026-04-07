@@ -1,8 +1,7 @@
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFont
-from qt_material import apply_stylesheet # type: ignore
+from qt_material import apply_stylesheet  # type: ignore
 from ui import Ui
-
 
 if __name__ == "__main__":
     app = QApplication([])

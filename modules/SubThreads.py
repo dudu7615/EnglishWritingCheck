@@ -45,9 +45,9 @@ class CallApiThread(QThread):
 
     def _handleFinishSignal(self, task: DataTypes.Task):
         self.count += 1
-        
-        Sql.Papers.mark(int(task.id),task.apiReply)
-        
+
+        Sql.Papers.mark(int(task.id), task.apiReply)
+
         self.progress.emit(int(self.count / len(self.tasks) * 100))
 
         if self.count == len(self.tasks):

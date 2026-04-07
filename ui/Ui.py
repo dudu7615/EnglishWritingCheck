@@ -106,9 +106,7 @@ class MainUi(QMainWindow):
 
         if currentPaper.parent():
             with Sql.getSession() as session:
-                if paper := Sql.Papers.get(
-                    int(currentPaper.text(0)), session=session
-                ):
+                if paper := Sql.Papers.get(int(currentPaper.text(0)), session=session):
                     paper.delete(session=session)
         else:
             QMessageBox.warning(self, "警告", "请先选择一张试卷")
@@ -193,7 +191,9 @@ class MainUi(QMainWindow):
                 self.ui.showPaper.setHtml(showPaper)
 
                 if comment := paper.comment:
-                    self.ui.showDetals.setMarkdown(HandleApiResult.result2Markdown(comment))
+                    self.ui.showDetals.setMarkdown(
+                        HandleApiResult.result2Markdown(comment)
+                    )
                 else:
                     self.ui.showDetals.setMarkdown("# 未批改")
 

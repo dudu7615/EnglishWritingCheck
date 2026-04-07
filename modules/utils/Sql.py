@@ -134,9 +134,11 @@ class Papers(_Model, table=True):
         finally:
             if not session:
                 ownSession.close()
-    
+
     @staticmethod
-    def getByExamId(examId: Optional[int], session: Optional[Session] = None) -> list["Papers"]:
+    def getByExamId(
+        examId: Optional[int], session: Optional[Session] = None
+    ) -> list["Papers"]:
         ownSession = session or getSession()
         try:
             statement = select(Papers).where(Papers.belong == examId)
@@ -193,7 +195,6 @@ class Papers(_Model, table=True):
         finally:
             if not session:
                 ownSession.close()
-
 
 
 def initSql(file: Path):

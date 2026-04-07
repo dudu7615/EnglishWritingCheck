@@ -60,9 +60,11 @@ def _dict_to_markdown(data: Mapping[str, _JSONValue], level: int = 2) -> list[st
                         item_label = (
                             str(item.get("title"))
                             if "title" in item and item.get("title")
-                            else str(item.get("text"))
-                            if "text" in item and item.get("text")
-                            else f"Item {idx}"
+                            else (
+                                str(item.get("text"))
+                                if "text" in item and item.get("text")
+                                else f"Item {idx}"
+                            )
                         )
                     else:
                         item_label = f"Item {idx}"
@@ -81,7 +83,9 @@ def _dict_to_markdown(data: Mapping[str, _JSONValue], level: int = 2) -> list[st
                                 lines.append(
                                     f"    - {_dataNames.get(sub_key, sub_key)}:"
                                 )
-                                lines.extend(f"        - {sub_item}" for sub_item in sub_val)
+                                lines.extend(
+                                    f"        - {sub_item}" for sub_item in sub_val
+                                )
                             else:
                                 # 递归一层字典内容，格式化为缩进子 bullet
                                 nested = _dict_to_markdown(sub_val, level + 2)

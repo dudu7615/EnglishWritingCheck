@@ -101,4 +101,3 @@ class Task:
     imgUrl: str
     imgPath: Path
     apiReply: ApiReply | None
-
