@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMainWindow, QTreeWidgetItem, QFileDialog, QMessageBox
 from modules import logger, uiLogger, Sql, Paths, DataTypes, SubThreads, HandleApiResult
 from pathlib import Path
+import shutil
 from .Windows import Main_ui
 import socket
 
@@ -81,7 +82,10 @@ class MainUi(QMainWindow):
         (Paths.data / "imgs" / str(examId)).mkdir(parents=True, exist_ok=True)
 
         for file in files:
-            Path(file).copy(Paths.data / "imgs" / str(examId) / Path(file).name)
+            shutil.copy2(
+                file,
+                Paths.data / "imgs" / str(examId) / Path(file).name,
+            )
 
         with Sql.getSession() as session:
             for file in files:
