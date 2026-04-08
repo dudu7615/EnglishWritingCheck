@@ -172,7 +172,7 @@ class MainUi(QMainWindow):
         logger.info(f"选中的试卷: {len(papers)} 张")
 
         self.apiThread = SubThreads.CallApiThread(tasks)
-        self.apiThread.finished.connect(self._finishCkeck)
+        self.apiThread.allTasksFinished.connect(self._finishCkeck)
         self.apiThread.progress.connect(self._mamageCheckProgress)
         self.apiThread.start()
 

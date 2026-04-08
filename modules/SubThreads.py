@@ -14,8 +14,7 @@ class CloudflareThread(QThread):
     def run(self):
         threading.current_thread().name = "CloudflareThread"
         for _ in range(3):
-            url = Cloudflare.run(self.port, self.timeout)
-            if url:
+            if url := Cloudflare.run(self.port, self.timeout):
                 self.result.emit(url)
                 return
 
@@ -31,7 +30,7 @@ class FileServerThread(QThread):
 
 
 class CallApiThread(QThread):
-    finished = Signal(object)  # list[DataTypes.Task]
+    allTasksFinished = Signal(object)  # list[DataTypes.Task]
     progress = Signal(int)  # %
 
     def __init__(self, tasks: list[DataTypes.Task]) -> None:
@@ -54,5 +53,4 @@ class CallApiThread(QThread):
         self.progress.emit(int(self.count / len(self.tasks) * 100))
 
         if self.count == len(self.tasks):
-            self.finished.emit(self.tasks)
-            self.terminate()
+            self.allTasksFinished.emit(self.tasks)
