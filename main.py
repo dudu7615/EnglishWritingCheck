@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFont
 from qt_material import apply_stylesheet  # type: ignore
-from ui import Ui
+from ui import Main
 
 if __name__ == "__main__":
     app = QApplication([])
@@ -9,6 +9,6 @@ if __name__ == "__main__":
     apply_stylesheet(app, theme="dark_cyan.xml")
     font.setPointSize(14)
     app.setFont(font)
-    ui = Ui.MainUi()
+    ui = Main.MainUi()
     ui.show()
     app.exec()
