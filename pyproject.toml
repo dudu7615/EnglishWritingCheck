@@ -10,6 +10,7 @@ dependencies = [
     "fastapi>=0.134.0",
     "httpx>=0.28.1",
     "loguru>=0.7.3",
+    "pydantic>=2.12.5",
     "pyside6>=6.10.2",
     "pyside6-stubs>=6.7.3.0",
     "pyyaml>=6.0.3",
