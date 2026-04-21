@@ -99,7 +99,7 @@ class Papers(_Model, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     belong: int = Field(index=True, foreign_key="exam.id")  # 对应考试
     img: str = Field()  # 图片路径
-    comment: Optional[dict[str, Any]] = Field(default=None, sa_type=JSON)  # 评分
+    comment: Optional[DataTypes.ApiReply] = Field(default=None, sa_type=JSON)  # 评分
     createdAt: Optional[datetime] = Field(default_factory=datetime.now)
 
     @staticmethod
@@ -164,7 +164,7 @@ class Papers(_Model, table=True):
             if not papers:
                 raise ValueError("Papers not found")
             if comment:
-                papers.comment = dict(comment)
+                papers.comment = comment
             ownSession.add(papers)
             ownSession.commit()
         finally:

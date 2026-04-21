@@ -1,26 +1,25 @@
-from dataclasses import dataclass
-from typing import TypedDict
 from pathlib import Path
+from pydantic import BaseModel, Field
 
 
-class ApiConfig(TypedDict):
+class ApiConfig(BaseModel):
     key: str
     url: str
 
 
-class ApiReply(TypedDict):
+class ApiReply(BaseModel):
     code: int  # 200
     message: str  # success
     data: ApiReply_data
 
 
-class ApiReply_data(TypedDict):
+class ApiReply_data(BaseModel):
     task_id: str
     result: Result
     request_id: str  # UUID
 
 
-class Result(TypedDict):
+class Result(BaseModel):
     score: int
     recognized_text: str  # 识别文本
     strengths: str  # 优势
@@ -45,59 +44,57 @@ class Result(TypedDict):
 
 class ResultDetale:
 
-    class word_usage_error(TypedDict):
+    class word_usage_error(BaseModel):
         错误单词: str
         原句引用: str
         修正形式: str
         错误原因解释: str
 
-    class phrase_usage_error(TypedDict):
+    class phrase_usage_error(BaseModel):
         错误短语: str
         原句引用: str
         修正形式: str
         错误原因解释: str
 
-    class sentence_usage_error(TypedDict):
+    class sentence_usage_error(BaseModel):
         错误句子: str
         修正后的句子: str
         错误原因解释: str
 
-    class tense_usage_error(TypedDict):
-        错误时态: str
-        原句引用: str
-        修正形式: str
-        错误原因解释: str
+    class tense_usage_error(BaseModel):
+        原句: str
+        错误点说明: str
+        修正原则解释: str
 
-    class highlight_sentence(TypedDict):
+    class highlight_sentence(BaseModel):
         原句: str
         亮点分析: str
 
-    class advanced_expression_suggestion(TypedDict):
+    class advanced_expression_suggestion(BaseModel):
         对应的学生原句: str
         修改后的完整英文句子: str
         对应的中文翻译: str
         修改点说明: str
         修改理由: str
 
-    class advanced_vocabulary(TypedDict):
+    class advanced_vocabulary(BaseModel):
         词汇: str
         所在句子: str
-        选择该词作为高级词汇的原因说明: str  # 选择该词作为“高级词汇”的原因说明
+        选择该词作为高级词汇的原因说明: str = Field(alias="选择该词作为“高级词汇”的原因说明")
 
-    class advanced_expression_pattern(TypedDict):
+    class advanced_expression_pattern(BaseModel):
         原句: str
         表达方式说明: str
         其在高考阅卷中的价值解释: str
 
-    class personalized_sample(TypedDict):
+    class personalized_sample(BaseModel):
         sample_text: str
         revision_explanation: str
 
 
-@dataclass
-class Task:
+class Task(BaseModel):
     id: str
     examRemoteId: str
     imgUrl: str
     imgPath: Path
-    apiReply: ApiReply | None
+    apiReply: ApiReply | None = None

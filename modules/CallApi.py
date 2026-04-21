@@ -1,8 +1,6 @@
 from modules import logger, config, DataTypes
-from typing import Any
 import httpx
 import anyio
-import json
 from PySide6.QtCore import Signal, QObject
 
 
@@ -10,23 +8,24 @@ class CallApi(QObject):
     finish = Signal(object)  # Task
 
     def _decodeReply(self, reply: str) -> DataTypes.ApiReply:
-        reply = reply.replace(
-            "选择该词作为“高级词汇”的原因说明", "选择该词作为高级词汇的原因说明"
-        )
-        data: dict[str, Any] = json.loads(reply)
-        data["data"]["result"] = json.loads(str(data["data"]["result"]))
-        return DataTypes.ApiReply(**data)
+        # reply = reply.replace(
+        #     "选择该词作为“高级词汇”的原因说明", "选择该词作为高级词汇的原因说明"
+        # )
+        # data: dict[str, Any] = json.loads(reply)
+        # data["data"]["result"] = json.loads(str(data["data"]["result"]))
+
+        return DataTypes.ApiReply.model_validate_json(reply)
 
     async def _callApi(self, task: DataTypes.Task, client: httpx.AsyncClient) -> None:
         params: dict[str, str] = {
-            "apikey": config["key"],
+            "apikey": config.key,
             "id": task.examRemoteId,
             "ocr": task.imgUrl,
         }
 
         for _ in range(3):
             try:
-                response = await client.post(config["url"], params=params)
+                response = await client.post(config.url, params=params)
                 if response.status_code != 200:
                     logger.warning(
                         f"尝试调用 API 失败，任务 {task.id} 状态码: {response.status_code}"
@@ -51,7 +50,10 @@ class CallApi(QObject):
 
         async def wrapper(task: DataTypes.Task, client: httpx.AsyncClient) -> None:
             async with semaphore:
-                await self._callApi(task, client)
+                try:
+                    await self._callApi(task, client)
+                except Exception as e:
+                    logger.error(f"任务 {getattr(task, 'id', None)} wrapper 层异常: {e}")
 
         async with httpx.AsyncClient(timeout=300) as client:
             async with anyio.create_task_group() as tg:
