@@ -15,8 +15,14 @@ class ApiReply(BaseModel):
 
 class ApiReply_data(BaseModel):
     task_id: str
-    result: Result
+    result: Result = Field()
     request_id: str  # UUID
+
+    from pydantic import field_validator
+    @field_validator('result', mode='before')
+    @classmethod
+    def _str2result(cls, v: str):
+        return Result.model_validate_json(v)
 
 
 class Result(BaseModel):
