@@ -1,5 +1,5 @@
 from pathlib import Path
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class ApiConfig(BaseModel):
@@ -18,11 +18,12 @@ class ApiReply_data(BaseModel):
     result: Result = Field()
     request_id: str  # UUID
 
-    from pydantic import field_validator
-    @field_validator('result', mode='before')
+    @field_validator("result", mode="before")
     @classmethod
-    def _str2result(cls, v: str):
-        return Result.model_validate_json(v)
+    def _str2result(cls, v: str | dict[str, str | int]) -> Result:
+        if isinstance(v, str):
+            return Result.model_validate_json(v)
+        return Result.model_validate(v)
 
 
 class Result(BaseModel):
@@ -49,7 +50,6 @@ class Result(BaseModel):
 
 
 class ResultDetale:
-
     class word_usage_error(BaseModel):
         错误单词: str
         原句引用: str
@@ -86,7 +86,19 @@ class ResultDetale:
     class advanced_vocabulary(BaseModel):
         词汇: str
         所在句子: str
-        选择该词作为高级词汇的原因说明: str = Field(alias="选择该词作为“高级词汇”的原因说明")
+        选择该词作为高级词汇的原因说明: str = Field(
+            alias="选择该词作为“高级词汇”的原因说明"
+        )
+
+        @model_validator(mode="before")
+        @classmethod
+        def _alias(cls, values: dict[str, str | int]) -> dict[str, str | int]:
+            """ sql中的字段是不带引号的，但alias设置导致结果必须带引号 """
+            targetKey = "选择该词作为高级词汇的原因说明"
+            apiKey = "选择该词作为“高级词汇”的原因说明"
+            if targetKey in values and apiKey not in values:
+                values[apiKey] = values.pop(targetKey)
+            return values
 
     class advanced_expression_pattern(BaseModel):
         原句: str
