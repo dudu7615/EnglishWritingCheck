@@ -2,6 +2,7 @@ from typing import Optional, Any, Annotated
 from datetime import datetime
 import sqlite3
 import atexit
+import json
 from pathlib import Path
 from sqlmodel import SQLModel, Field, create_engine, Session, select, delete  # type: ignore
 from sqlalchemy import text, event, MetaData, Engine, JSON, Column
@@ -25,7 +26,7 @@ class _PydanticColumn[T: BaseModel](TypeDecorator[T]):
     def process_bind_param(
         self, value: T | None, dialect: Any
     ) -> dict[str, Any] | None:
-        return value.model_dump() if value is not None else None
+        return value.model_dump(by_alias=True) if value is not None else None
 
     def process_result_value(
         self, value: dict[str, Any] | None, dialect: Any
@@ -34,6 +35,10 @@ class _PydanticColumn[T: BaseModel](TypeDecorator[T]):
 
 
 type _PydanticCol[T: BaseModel] = Annotated[T, _PydanticColumn]
+
+
+def _PydanticColSa[T: BaseModel](model: type[T]) -> Column[_PydanticCol[T]]:
+    return Column(_PydanticColumn(model))
 
 
 class _Model(SQLModel):
@@ -125,7 +130,7 @@ class Papers(_Model, table=True):
     belong: int = Field(index=True, foreign_key="exam.id")  # 对应考试
     img: str = Field()  # 图片路径
     comment: _PydanticCol[DataTypes.ApiReply] = Field(
-        default=None, sa_column=Column(_PydanticColumn(DataTypes.ApiReply))
+        default=None, sa_column=_PydanticColSa(DataTypes.ApiReply)
     )  # 批改意见
     createdAt: datetime = Field(default_factory=datetime.now)
 
