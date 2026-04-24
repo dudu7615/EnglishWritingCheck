@@ -1,14 +1,39 @@
-from typing import Optional, Any
+from typing import Optional, Any, Annotated
 from datetime import datetime
 import sqlite3
 import atexit
 from pathlib import Path
 from sqlmodel import SQLModel, Field, create_engine, Session, select, delete  # type: ignore
-from sqlalchemy import text, event, MetaData, Engine, JSON
+from sqlalchemy import text, event, MetaData, Engine, JSON, Column
+from sqlalchemy.types import TypeDecorator
+from pydantic import BaseModel
 from . import DataTypes, Paths
 
 _sqlMetadata = MetaData()
 _engine: Optional[Engine] = None
+
+
+class _PydanticColumn[T: BaseModel](TypeDecorator[T]):
+    impl = JSON
+    cache_ok = True
+    mutable = True  # 自动检测Pydantic实例内部属性修改，无需手动标记脏数据
+
+    def __init__(self, model: type[T], **kwargs: Any):
+        super().__init__(**kwargs)
+        self.model = model
+
+    def process_bind_param(
+        self, value: T | None, dialect: Any
+    ) -> dict[str, Any] | None:
+        return value.model_dump() if value is not None else None
+
+    def process_result_value(
+        self, value: dict[str, Any] | None, dialect: Any
+    ) -> T | None:
+        return self.model.model_validate(value) if value is not None else None
+
+
+type _PydanticCol[T: BaseModel] = Annotated[T, _PydanticColumn]
 
 
 class _Model(SQLModel):
@@ -99,8 +124,10 @@ class Papers(_Model, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     belong: int = Field(index=True, foreign_key="exam.id")  # 对应考试
     img: str = Field()  # 图片路径
-    comment: Optional[DataTypes.ApiReply] = Field(default=None, sa_type=JSON)  # 评分
-    createdAt: Optional[datetime] = Field(default_factory=datetime.now)
+    comment: _PydanticCol[DataTypes.ApiReply] = Field(
+        default=None, sa_column=Column(_PydanticColumn(DataTypes.ApiReply))
+    )  # 批改意见
+    createdAt: datetime = Field(default_factory=datetime.now)
 
     @staticmethod
     def add(belong: int, img: str, session: Optional[Session] = None) -> "Papers":
