@@ -1,0 +1,8 @@
+POST https://api.github.com/markdown
+Accept: text/html
+X-GitHub-Api-Version: 2026-03-10
+
+{
+  "mode": "markdown",
+  "text": "Hello world github/linguist#1 **cool**, and #1!"
+}
