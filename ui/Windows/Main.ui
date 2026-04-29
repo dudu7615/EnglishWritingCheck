@@ -248,16 +248,11 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
-            <widget class="QLabel" name="showScore">
-             <property name="text">
-              <string>分数：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTextEdit" name="showDetals">
-             <property name="readOnly">
-              <bool>true</bool>
+            <widget class="QWebEngineView" name="showDetals">
+             <property name="url">
+              <url>
+               <string>about:blank</string>
+              </url>
              </property>
             </widget>
            </item>
@@ -313,6 +308,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
