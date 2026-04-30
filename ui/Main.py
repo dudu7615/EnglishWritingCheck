@@ -30,23 +30,18 @@ class MainUi(QMainWindow):
         self.apiThread: SubThreads.CallApiThread | None = None
 
         self.cfUrl = ""
-        self.showOption = (
-            Enums.ShowDetaleOption.word_usage_errors
-            | Enums.ShowDetaleOption.advanced_expression_pattern
-            | Enums.ShowDetaleOption.advanced_vocabulary
-            | Enums.ShowDetaleOption.personalized_sample
-            | Enums.ShowDetaleOption.sentence_usage_errors
-            | Enums.ShowDetaleOption.tense_usage_errors
-        )
+        self.showOption = Enums.ShowDetaleOption.ALL
         self._initSubThreads()
 
         self.initUi()
 
     def initUi(self):
-        # 可移动控件显示
+        # Title Bar
         self.ui.showOrHideLog.triggered.connect(
             lambda: self.ui.logBox.setVisible(not self.ui.logBox.isVisible())
         )
+        self.ui.showDetaleAll.triggered.connect(lambda: self.showOptionsChanged(Enums.ShowDetaleOption.ALL))
+        self.ui.showDetaleSelect.triggered.connect(lambda: self.showOptionsUi.show())
 
         # Exam Page
         self.ui.creatNewExam.clicked.connect(self.createExam)
@@ -226,6 +221,8 @@ class MainUi(QMainWindow):
 
     def showOptionsChanged(self, options: Enums.ShowDetaleOption):
         logger.info(f"显示选项改变: {options}")
+        self.showOption = options
+        self.showPaerAndDetales()
 
     def _initExamList(self):
         exams: list[Sql.Exam] = Sql.Exam.getAll()

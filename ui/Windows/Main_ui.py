@@ -31,6 +31,10 @@ class Ui_MainWindow(object):
         MainWindow.resize(1050, 720)
         self.showOrHideLog = QAction(MainWindow)
         self.showOrHideLog.setObjectName(u"showOrHideLog")
+        self.showDetaleAll = QAction(MainWindow)
+        self.showDetaleAll.setObjectName(u"showDetaleAll")
+        self.showDetaleSelect = QAction(MainWindow)
+        self.showDetaleSelect.setObjectName(u"showDetaleSelect")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -247,6 +251,8 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1050, 33))
         self.menu = QMenu(self.menubar)
         self.menu.setObjectName(u"menu")
+        self.menu_2 = QMenu(self.menubar)
+        self.menu_2.setObjectName(u"menu_2")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -267,7 +273,10 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.logBox)
 
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menu_2.menuAction())
         self.menu.addAction(self.showOrHideLog)
+        self.menu_2.addAction(self.showDetaleAll)
+        self.menu_2.addAction(self.showDetaleSelect)
 
         self.retranslateUi(MainWindow)
 
@@ -280,6 +289,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.showOrHideLog.setText(QCoreApplication.translate("MainWindow", u"\u663e\u793a/\u9690\u85cf \u65e5\u5fd7", None))
+        self.showDetaleAll.setText(QCoreApplication.translate("MainWindow", u"\u5168\u90e8", None))
+        self.showDetaleSelect.setText(QCoreApplication.translate("MainWindow", u"\u624b\u52a8\u8c03\u6574", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"\u64cd\u4f5c", None))
         self.creatNewExam.setText(QCoreApplication.translate("MainWindow", u"\u65b0\u5efa\u8003\u8bd5", None))
         self.deleteExam.setText(QCoreApplication.translate("MainWindow", u"\u5220\u9664\u8003\u8bd5", None))
@@ -305,6 +316,7 @@ class Ui_MainWindow(object):
         self.groupBox_9.setTitle(QCoreApplication.translate("MainWindow", u"\u8bc4\u8bed", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.checkTab), QCoreApplication.translate("MainWindow", u"\u8bd5\u5377\u6279\u9605", None))
         self.menu.setTitle(QCoreApplication.translate("MainWindow", u"\u63a7\u4ef6\u7ba1\u7406", None))
+        self.menu_2.setTitle(QCoreApplication.translate("MainWindow", u"\u663e\u793a\u9009\u9879", None))
         self.logBox.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u65e5\u5fd7\u8f93\u51fa", None))
     # retranslateUi
 

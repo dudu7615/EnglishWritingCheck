@@ -280,7 +280,15 @@
     </property>
     <addaction name="showOrHideLog"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>显示选项</string>
+    </property>
+    <addaction name="showDetaleAll"/>
+    <addaction name="showDetaleSelect"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="logBox">
@@ -305,6 +313,16 @@
   <action name="showOrHideLog">
    <property name="text">
     <string>显示/隐藏 日志</string>
+   </property>
+  </action>
+  <action name="showDetaleAll">
+   <property name="text">
+    <string>全部</string>
+   </property>
+  </action>
+  <action name="showDetaleSelect">
+   <property name="text">
+    <string>手动调整</string>
    </property>
   </action>
  </widget>
