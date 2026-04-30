@@ -1,10 +1,13 @@
 from pathlib import Path
 from pydantic import BaseModel, Field, field_validator, model_validator
+from . import Enums
 
 
-class ApiConfig(BaseModel):
+class Config(BaseModel):    
+    url: str = Field(default="https://api.extreme-code.cn/API/dhxx.php")
     key: str
-    url: str
+    detaleOptions: int = Field(default=Enums.ShowDetaleOption.ALL)
+
 
 
 class ApiReply(BaseModel):

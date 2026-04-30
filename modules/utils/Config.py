@@ -4,4 +4,10 @@ from modules import DataTypes
 
 _configFile = Paths.config / "Api.yaml"
 
-config = DataTypes.ApiConfig.model_validate(yaml.safe_load(_configFile.read_text(encoding="utf-8")))
+config = DataTypes.Config.model_validate(
+    yaml.safe_load(_configFile.read_text(encoding="utf-8"))
+)
+
+
+def saveConfig():
+    _configFile.write_text(yaml.dump(config.model_dump()), encoding="utf-8")
