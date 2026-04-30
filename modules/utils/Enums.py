@@ -2,7 +2,6 @@ from enum import IntFlag, auto
 
 
 class ShowDetaleOption(IntFlag):
-    NONE = 0
     recognized_text = auto()  # 识别文本
     strengths = auto()  # 优势
     content_deficiencies = auto()  # 不足
@@ -21,11 +20,15 @@ class ShowDetaleOption(IntFlag):
 
     advanced_vocabulary = auto()  # 高级词汇
     advanced_expression_pattern = auto()  # 高级表达模式
-    personalized_sample = auto()  # 个性化样例
+    # personalized_sample = auto()  # 个性化样例
+
+    NONE = 0
+    ALL = 0b11111111111111111111111111111111111111111111111111111111
 
 
 optionNames: dict[ShowDetaleOption, str] = {
     ShowDetaleOption.NONE: "无",
+    ShowDetaleOption.ALL: "全部",
     ShowDetaleOption.recognized_text: "识别文本",
     ShowDetaleOption.strengths: "优势",
     ShowDetaleOption.content_deficiencies: "不足",
@@ -42,7 +45,7 @@ optionNames: dict[ShowDetaleOption, str] = {
     ShowDetaleOption.advanced_expression_suggestions: "高级表达建议",
     ShowDetaleOption.advanced_vocabulary: "高级词汇",
     ShowDetaleOption.advanced_expression_pattern: "高级表达模式",
-    ShowDetaleOption.personalized_sample: "个性化样例",
+    # ShowDetaleOption.personalized_sample: "个性化样例",
 }
 
 oppositeOptionNames: dict[str, ShowDetaleOption] = {

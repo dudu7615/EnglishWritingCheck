@@ -11,7 +11,7 @@ print(
         Enums.ShowDetaleOption.word_usage_errors
         | Enums.ShowDetaleOption.advanced_expression_pattern
         | Enums.ShowDetaleOption.advanced_vocabulary
-        | Enums.ShowDetaleOption.personalized_sample
+        # | Enums.ShowDetaleOption.personalized_sample
         | Enums.ShowDetaleOption.sentence_usage_errors
         | Enums.ShowDetaleOption.tense_usage_errors,
     )
@@ -23,7 +23,7 @@ print(
         Enums.ShowDetaleOption.word_usage_errors
         | Enums.ShowDetaleOption.advanced_expression_pattern
         | Enums.ShowDetaleOption.advanced_vocabulary
-        | Enums.ShowDetaleOption.personalized_sample
+        # | Enums.ShowDetaleOption.personalized_sample
         | Enums.ShowDetaleOption.sentence_usage_errors
         | Enums.ShowDetaleOption.tense_usage_errors,
     )
