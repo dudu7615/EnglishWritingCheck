@@ -5,14 +5,21 @@ from . import Enums, DataTypes, Paths
 
 
 def _handleDict(data: BaseModel, level: int = 0, count: int = 0) -> str:
+    """将 BaseModel 转为 markdown 列表。
+
+    有序列表（count>0）需用4空格缩进，markdown库才能正确识别嵌套；
+    扁平字段（count==0）用2空格缩进，避免被误识别为代码块。
+    """
     output: list[str] = []
     output.extend(
         (
-            # md 非有序列表中的无序列表非首项，没有前导数字
-            # 只有当当前项不是列表中的第一项或者当前项不是列表项时，才添加前导数字
-            f"{'  ' * (level + 1)} - **{key}**: {value}"
-            if i != 0 or count == 0
-            else (f"{'  ' * level}{count}. \n{'  ' * (level + 1)} - **{key}**: {value}")
+            f"{'    ' * level}{count}. \n{'    ' * (level + 1)}- **{key}**: {value}"
+            if count != 0 and i == 0
+            else (
+                f"{'    ' * (level + 1)}- **{key}**: {value}"
+                if count != 0
+                else f"{'  ' * (level + 1)}- **{key}**: {value}"
+            )
         )
         for i, (key, value) in enumerate(data)
     )
@@ -39,7 +46,7 @@ def result2Markdown(data: DataTypes.Result, options: Enums.ShowDetaleOption) -> 
                 elif isinstance(value, str):
                     markdown += f"### {Enums.optionNames.get(option, option.name)}\n"
                     markdown += value + "\n"
-
+    print(markdown)
     return markdown
 
 
