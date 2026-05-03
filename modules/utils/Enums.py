@@ -23,7 +23,7 @@ class ShowDetaleOption(IntFlag):
     # personalized_sample = auto()  # 个性化样例
 
     NONE = 0
-    ALL = 0b11111111111111111111111111111111111111111111111111111111
+    ALL = 0b11111111111111111111111111111111
 
 
 optionNames: dict[ShowDetaleOption, str] = {

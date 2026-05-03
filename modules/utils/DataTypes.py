@@ -1,14 +1,24 @@
 from pathlib import Path
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator, field_serializer
 from . import Enums
 
 
-class Config(BaseModel):    
+class Config(BaseModel):
     url: str = Field(default="https://api.extreme-code.cn/API/dhxx.php")
     key: str
-    detaleOptions: int = Field(default=Enums.ShowDetaleOption.ALL)
+    detaleOptions: Enums.ShowDetaleOption = Field(default=Enums.ShowDetaleOption.ALL)
 
+    @field_validator("detaleOptions", mode="before")
+    @classmethod
+    def _int2Enum(cls, v: int | Enums.ShowDetaleOption) -> Enums.ShowDetaleOption:
+        if isinstance(v, Enums.ShowDetaleOption):
+            return v
+        return Enums.ShowDetaleOption(v)
 
+    @field_serializer("detaleOptions")
+    @classmethod
+    def _enum2int(cls, v: Enums.ShowDetaleOption) -> int:
+        return v.value
 
 class ApiReply(BaseModel):
     code: int  # 200

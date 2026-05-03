@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QTreeWidgetItem, QFileDialog, QMessag
 from modules import (
     logger,
     uiLogger,
+    config,
     Sql,
     Paths,
     DataTypes,
@@ -30,7 +31,6 @@ class MainUi(QMainWindow):
         self.apiThread: SubThreads.CallApiThread | None = None
 
         self.cfUrl = ""
-        self.showOption = Enums.ShowDetaleOption.ALL
         self._initSubThreads()
 
         self.initUi()
@@ -41,7 +41,7 @@ class MainUi(QMainWindow):
             lambda: self.ui.logBox.setVisible(not self.ui.logBox.isVisible())
         )
         self.ui.showDetaleAll.triggered.connect(lambda: self.showOptionsChanged(Enums.ShowDetaleOption.ALL))
-        self.ui.showDetaleSelect.triggered.connect(lambda: self.showOptionsUi.show())
+        self.ui.showDetaleSelect.triggered.connect(self.editSHowOptions)
 
         # Exam Page
         self.ui.creatNewExam.clicked.connect(self.createExam)
@@ -213,7 +213,7 @@ class MainUi(QMainWindow):
                 if comment := paper.comment:
                     self.ui.showDetals.setHtml(
                         HandleApiResult.result2Html(
-                            comment.data.result, self.showOption
+                            comment.data.result, config.detaleOptions
                         )
                     )
                 else:
@@ -221,8 +221,12 @@ class MainUi(QMainWindow):
 
     def showOptionsChanged(self, options: Enums.ShowDetaleOption):
         logger.info(f"显示选项改变: {options}")
-        self.showOption = options
+        config.detaleOptions = options
         self.showPaerAndDetales()
+
+    def editSHowOptions(self):
+        self.showOptionsUi.setOrignOption(config.detaleOptions)
+        self.showOptionsUi.show()
 
     def _initExamList(self):
         exams: list[Sql.Exam] = Sql.Exam.getAll()

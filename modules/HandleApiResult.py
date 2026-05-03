@@ -46,7 +46,6 @@ def result2Markdown(data: DataTypes.Result, options: Enums.ShowDetaleOption) -> 
                 elif isinstance(value, str):
                     markdown += f"### {Enums.optionNames.get(option, option.name)}\n"
                     markdown += value + "\n"
-    print(markdown)
     return markdown
 
 
