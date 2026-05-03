@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 from typing import TYPE_CHECKING
 
-_configFile = Paths.config / "Api.yaml"
+_configFile = Paths.config / "Config.yaml"
 
 _Base = DataTypes.Config if TYPE_CHECKING else object
 
