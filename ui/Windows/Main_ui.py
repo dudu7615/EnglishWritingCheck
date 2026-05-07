@@ -41,6 +41,7 @@ from PySide6.QtGui import (
     QRadialGradient,
     QTransform,
 )
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QApplication,
     QDockWidget,
@@ -76,6 +77,10 @@ class Ui_MainWindow(object):
         MainWindow.resize(1050, 720)
         self.showOrHideLog = QAction(MainWindow)
         self.showOrHideLog.setObjectName("showOrHideLog")
+        self.showDetaleAll = QAction(MainWindow)
+        self.showDetaleAll.setObjectName("showDetaleAll")
+        self.showDetaleSelect = QAction(MainWindow)
+        self.showDetaleSelect.setObjectName("showDetaleSelect")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -258,14 +263,9 @@ class Ui_MainWindow(object):
         self.groupBox_9.setObjectName("groupBox_9")
         self.verticalLayout_6 = QVBoxLayout(self.groupBox_9)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.showScore = QLabel(self.groupBox_9)
-        self.showScore.setObjectName("showScore")
-
-        self.verticalLayout_6.addWidget(self.showScore)
-
-        self.showDetals = QTextEdit(self.groupBox_9)
+        self.showDetals = QWebEngineView(self.groupBox_9)
         self.showDetals.setObjectName("showDetals")
-        self.showDetals.setReadOnly(True)
+        self.showDetals.setUrl(QUrl("about:blank"))
 
         self.verticalLayout_6.addWidget(self.showDetals)
 
@@ -284,6 +284,8 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1050, 33))
         self.menu = QMenu(self.menubar)
         self.menu.setObjectName("menu")
+        self.menu_2 = QMenu(self.menubar)
+        self.menu_2.setObjectName("menu_2")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -304,7 +306,10 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.logBox)
 
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menu_2.menuAction())
         self.menu.addAction(self.showOrHideLog)
+        self.menu_2.addAction(self.showDetaleAll)
+        self.menu_2.addAction(self.showDetaleSelect)
 
         self.retranslateUi(MainWindow)
 
@@ -322,6 +327,12 @@ class Ui_MainWindow(object):
             QCoreApplication.translate(
                 "MainWindow", "\u663e\u793a/\u9690\u85cf \u65e5\u5fd7", None
             )
+        )
+        self.showDetaleAll.setText(
+            QCoreApplication.translate("MainWindow", "\u5168\u90e8", None)
+        )
+        self.showDetaleSelect.setText(
+            QCoreApplication.translate("MainWindow", "\u624b\u52a8\u8c03\u6574", None)
         )
         self.groupBox_3.setTitle(
             QCoreApplication.translate("MainWindow", "\u64cd\u4f5c", None)
@@ -401,15 +412,15 @@ class Ui_MainWindow(object):
         self.groupBox_9.setTitle(
             QCoreApplication.translate("MainWindow", "\u8bc4\u8bed", None)
         )
-        self.showScore.setText(
-            QCoreApplication.translate("MainWindow", "\u5206\u6570\uff1a", None)
-        )
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.checkTab),
             QCoreApplication.translate("MainWindow", "\u8bd5\u5377\u6279\u9605", None),
         )
         self.menu.setTitle(
             QCoreApplication.translate("MainWindow", "\u63a7\u4ef6\u7ba1\u7406", None)
+        )
+        self.menu_2.setTitle(
+            QCoreApplication.translate("MainWindow", "\u663e\u793a\u9009\u9879", None)
         )
         self.logBox.setWindowTitle(
             QCoreApplication.translate("MainWindow", "\u65e5\u5fd7\u8f93\u51fa", None)

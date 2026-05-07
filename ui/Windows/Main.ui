@@ -248,16 +248,11 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
-            <widget class="QLabel" name="showScore">
-             <property name="text">
-              <string>分数：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTextEdit" name="showDetals">
-             <property name="readOnly">
-              <bool>true</bool>
+            <widget class="QWebEngineView" name="showDetals">
+             <property name="url">
+              <url>
+               <string>about:blank</string>
+              </url>
              </property>
             </widget>
            </item>
@@ -285,7 +280,15 @@
     </property>
     <addaction name="showOrHideLog"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>显示选项</string>
+    </property>
+    <addaction name="showDetaleAll"/>
+    <addaction name="showDetaleSelect"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="logBox">
@@ -312,7 +315,24 @@
     <string>显示/隐藏 日志</string>
    </property>
   </action>
+  <action name="showDetaleAll">
+   <property name="text">
+    <string>全部</string>
+   </property>
+  </action>
+  <action name="showDetaleSelect">
+   <property name="text">
+    <string>手动调整</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

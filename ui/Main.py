@@ -1,8 +1,19 @@
 from PySide6.QtWidgets import QMainWindow, QTreeWidgetItem, QFileDialog, QMessageBox
-from modules import logger, uiLogger, Sql, Paths, DataTypes, SubThreads, HandleApiResult
+from modules import (
+    logger,
+    uiLogger,
+    config,
+    Sql,
+    Paths,
+    DataTypes,
+    Enums,
+    SubThreads,
+    HandleApiResult,
+)
 from pathlib import Path
 import shutil
 from .Windows import Main_ui
+from ui import ShowOptions
 import socket
 
 
@@ -11,7 +22,9 @@ class MainUi(QMainWindow):
         super().__init__()
         self.ui = Main_ui.Ui_MainWindow()
         self.ui.setupUi(self)  # type: ignore
+        self.showOptionsUi = ShowOptions.ShowOptionsUi()
         uiLogger.log.connect(self.ui.showLog.append)
+        self.showOptionsUi.optionChange.connect(self.showOptionsChanged)
 
         self.fileServer: SubThreads.FileServerThread | None = None
         self.cloudflare: SubThreads.CloudflareThread | None = None
@@ -23,19 +36,24 @@ class MainUi(QMainWindow):
         self.initUi()
 
     def initUi(self):
-        # 可移动控件显示
+        # Title Bar
         self.ui.showOrHideLog.triggered.connect(
             lambda: self.ui.logBox.setVisible(not self.ui.logBox.isVisible())
         )
+        self.ui.showDetaleAll.triggered.connect(
+            lambda: self.showOptionsChanged(Enums.ShowDetaleOption.ALL)
+        )
+        self.ui.showDetaleSelect.triggered.connect(self.editSHowOptions)
 
         # Exam Page
         self.ui.creatNewExam.clicked.connect(self.createExam)
         self.ui.deleteExam.clicked.connect(self.deleteExam)
 
         # Paper Page
+        self.ui.showDetals.setHtml(HandleApiResult.result2Html())
         self.ui.importPapers.clicked.connect(self.importPapers)
         self.ui.deleteChoosed.clicked.connect(self.deletePapers)
-        self.ui.paperList.clicked.connect(self.onPaperListClicked)
+        self.ui.paperList.clicked.connect(self.showPaerAndDetales)
         self.ui.checkChosed.clicked.connect(self.checkChosed)
 
         self._initExamList()
@@ -180,7 +198,7 @@ class MainUi(QMainWindow):
         self.apiThread.progress.connect(self._mamageCheckProgress)
         self.apiThread.start()
 
-    def onPaperListClicked(self):
+    def showPaerAndDetales(self):
         current = self.ui.paperList.currentItem()
         if current.parent():
             if paper := Sql.Papers.get(int(current.text(0))):
@@ -195,11 +213,22 @@ class MainUi(QMainWindow):
                 self.ui.showPaper.setHtml(showPaper)
 
                 if comment := paper.comment:
-                    self.ui.showDetals.setMarkdown(
-                        HandleApiResult.result2Markdown(comment)
+                    self.ui.showDetals.setHtml(
+                        HandleApiResult.result2Html(
+                            comment.data.result, config.detaleOptions
+                        )
                     )
                 else:
-                    self.ui.showDetals.setMarkdown("# 未批改")
+                    self.ui.showDetals.setHtml(HandleApiResult.result2Html())
+
+    def showOptionsChanged(self, options: Enums.ShowDetaleOption):
+        logger.info(f"显示选项改变: {options}")
+        config.detaleOptions = options
+        self.showPaerAndDetales()
+
+    def editSHowOptions(self):
+        self.showOptionsUi.setOrignOption(config.detaleOptions)
+        self.showOptionsUi.show()
 
     def _initExamList(self):
         exams: list[Sql.Exam] = Sql.Exam.getAll()
