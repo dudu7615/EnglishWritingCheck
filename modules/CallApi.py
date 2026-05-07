@@ -53,7 +53,9 @@ class CallApi(QObject):
                 try:
                     await self._callApi(task, client)
                 except Exception as e:
-                    logger.error(f"任务 {getattr(task, 'id', None)} wrapper 层异常: {e}")
+                    logger.error(
+                        f"任务 {getattr(task, 'id', None)} wrapper 层异常: {e}"
+                    )
 
         async with httpx.AsyncClient(timeout=300) as client:
             async with anyio.create_task_group() as tg:

@@ -2,8 +2,10 @@ from PySide6.QtWidgets import QApplication
 from modules import Enums
 from ui import ShowOptions
 
+
 def testShowOptions(options: Enums.ShowDetaleOption):
     print(options)
+
 
 app = QApplication()
 ui = ShowOptions.ShowOptionsUi()

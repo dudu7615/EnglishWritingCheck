@@ -1,5 +1,11 @@
 from pathlib import Path
-from pydantic import BaseModel, Field, field_validator, model_validator, field_serializer
+from pydantic import (
+    BaseModel,
+    Field,
+    field_validator,
+    model_validator,
+    field_serializer,
+)
 from . import Enums
 
 
@@ -19,6 +25,7 @@ class Config(BaseModel):
     @classmethod
     def _enum2int(cls, v: Enums.ShowDetaleOption) -> int:
         return v.value
+
 
 class ApiReply(BaseModel):
     code: int  # 200
@@ -106,7 +113,7 @@ class ResultDetale:
         @model_validator(mode="before")
         @classmethod
         def _alias(cls, values: dict[str, str | int]) -> dict[str, str | int]:
-            """ sql中的字段是不带引号的，但alias设置导致结果必须带引号 """
+            """sql中的字段是不带引号的，但alias设置导致结果必须带引号"""
             targetKey = "选择该词作为高级词汇的原因说明"
             apiKey = "选择该词作为“高级词汇”的原因说明"
             if targetKey in values and apiKey not in values:

@@ -40,7 +40,9 @@ class MainUi(QMainWindow):
         self.ui.showOrHideLog.triggered.connect(
             lambda: self.ui.logBox.setVisible(not self.ui.logBox.isVisible())
         )
-        self.ui.showDetaleAll.triggered.connect(lambda: self.showOptionsChanged(Enums.ShowDetaleOption.ALL))
+        self.ui.showDetaleAll.triggered.connect(
+            lambda: self.showOptionsChanged(Enums.ShowDetaleOption.ALL)
+        )
         self.ui.showDetaleSelect.triggered.connect(self.editSHowOptions)
 
         # Exam Page

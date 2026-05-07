@@ -1,6 +1,16 @@
-from modules import CallApi, DataTypes, HandleApiResult, Enums, logger, SubThreads, Paths
+from modules import (
+    CallApi,
+    DataTypes,
+    HandleApiResult,
+    Enums,
+    logger,
+    SubThreads,
+    Paths,
+)
 
 url = ""
+
+
 def getCfUrl(result: str):
     global url
     url = result
@@ -15,6 +25,10 @@ while not url:
     pass
 
 tasks: list[DataTypes.Task] = [
-    DataTypes.Task(id="1", examRemoteId="60636437", imgUrl=f"{url}/test/image.jpg", imgPath=Paths.data / "imgs" / "test/image.jpg"),
+    DataTypes.Task(
+        id="1",
+        examRemoteId="60636437",
+        imgUrl=f"{url}/test/image.jpg",
+        imgPath=Paths.data / "imgs" / "test/image.jpg",
+    ),
 ]
-

@@ -15,5 +15,5 @@ __all__ = [
     "Cloudflare",
     "SubThreads",
     "HandleApiResult",
-    "Enums"
+    "Enums",
 ]
